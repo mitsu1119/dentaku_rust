@@ -6,7 +6,7 @@ trait TokenVec {
     fn expect_kind(&self, kind: TokenType) -> Result<&Token, &str>;
 }
 
-impl TokenVec for Vec<Token> {
+impl TokenVec for [Token] {
     fn expect_kind(&self, kind: TokenType) -> Result<&Token, &str> {
         if let Some(tk) = self.first() {
             if mem::discriminant(&tk.kind) == mem::discriminant(&kind) {
@@ -33,7 +33,7 @@ pub struct Expr<'a> {
 }
 
 impl<'a> Expr<'a> {
-    pub fn parse(lexed: &'a Vec<Token>) -> Result<Self, &str> {
+    pub fn parse(lexed: &'a [Token]) -> Result<Self, &str> {
         let mut value = vec![];
         value.push(lexed.expect_kind(TokenType::Num(0))?);
 
