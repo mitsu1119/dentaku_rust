@@ -6,6 +6,8 @@ use std::{
 use calc::Calc;
 
 mod calc;
+mod lexer;
+mod token;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let calc = Calc::new();
