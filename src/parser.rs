@@ -1,7 +1,7 @@
 /*
  * <expr> = <term> ((Plus | Minus) <term>)*
  * <term> = <factor> ((Asterisk | Slash) <factor>)*
- * <factor> = Num
+ * <factor> = Num | (Lbrace <expr> Rbrace)
  */
 
 use crate::{ast::Ast, expr::Expr, token::Token};

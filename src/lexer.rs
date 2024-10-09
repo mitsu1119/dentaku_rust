@@ -41,6 +41,8 @@ impl Lexer {
                 '-' => Some(Token::new(TokenType::Minus)),
                 '*' => Some(Token::new(TokenType::Asterisk)),
                 '/' => Some(Token::new(TokenType::Slash)),
+                '(' => Some(Token::new(TokenType::Lbrace)),
+                ')' => Some(Token::new(TokenType::Rbrace)),
                 _ => None,
             }
         }
