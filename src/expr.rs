@@ -19,7 +19,7 @@ pub struct Expr<'a> {
 }
 
 impl<'a> Ast<'a> for Expr<'a> {
-    fn parse(lexed: &'a [Token]) -> Result<Self, &str> {
+    fn parse(lexed: &'a [Token]) -> Result<Self, String> {
         let mut cursor = 0;
         let mut value = vec![];
         let mut ops = vec![];
@@ -55,5 +55,18 @@ impl<'a> Ast<'a> for Expr<'a> {
 
     fn token_len(&self) -> usize {
         self.token_len
+    }
+
+    fn eval(&self) -> i64 {
+        let mut res = self.value[0].eval();
+
+        for i in 1..self.value.len() {
+            match self.ops[i - 1] {
+                AddOrSub::Add => res += self.value[i].eval(),
+                AddOrSub::Sub => res -= self.value[i].eval(),
+            }
+        }
+
+        res
     }
 }

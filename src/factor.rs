@@ -10,7 +10,7 @@ pub struct Factor<'a> {
 }
 
 impl<'a> Ast<'a> for Factor<'a> {
-    fn parse(lexed: &'a [Token]) -> Result<Self, &str> {
+    fn parse(lexed: &'a [Token]) -> Result<Self, String> {
         Ok(Self {
             value: lexed.expect_kind(TokenType::Num(0))?,
         })
@@ -18,5 +18,13 @@ impl<'a> Ast<'a> for Factor<'a> {
 
     fn token_len(&self) -> usize {
         1
+    }
+
+    fn eval(&self) -> i64 {
+        if let TokenType::Num(res) = self.value.kind {
+            res
+        } else {
+            0
+        }
     }
 }

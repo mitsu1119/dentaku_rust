@@ -26,9 +26,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         stdin().read_line(&mut input)?;
         input = input.trim().to_string();
 
-        let res = calc.run(&input);
-
-        println!("input: {}", input);
-        println!("res  : {}", res);
+        let res = calc.run(&input)?;
+        println!("{}", res);
     }
 }
