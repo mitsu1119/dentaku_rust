@@ -5,7 +5,7 @@ impl Calc {
         Self {}
     }
 
-    pub fn run(expr: String) -> i64 {
+    pub fn run(&self, expr: &String) -> i64 {
         100
     }
 }
