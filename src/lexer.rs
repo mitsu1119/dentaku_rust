@@ -12,6 +12,26 @@ impl Lexer {
         ch.chars().next().unwrap().is_whitespace()
     }
 
+    fn is_numeric(ch: &str) -> bool {
+        if ch.len() != 1 {
+            return false;
+        }
+
+        ch.chars().next().unwrap().is_numeric()
+    }
+
+    fn is_not_numeric(ch: char) -> bool {
+        !ch.is_numeric()
+    }
+
+    fn read_decimal(start: &str) -> &str {
+        if let Some(ind) = start.find(Self::is_not_numeric) {
+            &start[..ind]
+        } else {
+            start
+        }
+    }
+
     pub fn lex(target: &str) -> Vec<Token> {
         if target.len() == 0 {
             return vec![];
@@ -24,11 +44,15 @@ impl Lexer {
             let ch = &target[cursor..cursor + 1];
             if Lexer::is_space(ch) {
                 cursor += 1;
-                continue;
+            } else if Lexer::is_numeric(ch) {
+                let num = Self::read_decimal(&target[cursor..]);
+                let tk = Token::new(TokenType::Unidentified(num.to_string()));
+                res.push(tk);
+                cursor += num.len();
             } else {
-                res.push(Token::new(TokenType::Unidentified(ch.to_string())));
+                let tk = Token::new(TokenType::Unidentified(ch.to_string()));
+                res.push(tk);
                 cursor += 1;
-                continue;
             }
         }
 
