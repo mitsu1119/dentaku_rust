@@ -5,11 +5,12 @@ use std::{
 
 use calc::Calc;
 
-mod ast;
 mod calc;
+mod expr;
 mod lexer;
 mod parser;
 mod token;
+mod token_vec;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let calc = Calc::new();

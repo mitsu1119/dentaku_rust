@@ -1,8 +1,8 @@
 /*
- * <expr> = Num (PLUS Num)*
+ * <expr> = Num ((PLUS | MINUS) Num)*
  */
 
-use crate::{ast::Expr, token::Token};
+use crate::{expr::Expr, token::Token};
 
 pub struct Parser {}
 
