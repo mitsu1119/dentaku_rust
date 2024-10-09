@@ -5,6 +5,7 @@ use std::{
 
 use calc::Calc;
 
+mod ast;
 mod calc;
 mod expr;
 mod lexer;

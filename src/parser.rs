@@ -1,4 +1,9 @@
-use crate::{expr::Expr, token::Token};
+/*
+ * <expr> = <term> ((Plus | Minus) <term>)*
+ * <term> = Num ((Asterisk | Slash) Num)*
+ */
+
+use crate::{ast::Ast, expr::Expr, token::Token};
 
 pub struct Parser {}
 

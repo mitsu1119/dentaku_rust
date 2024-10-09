@@ -1,8 +1,6 @@
-/*
- * <expr> = Num ((PLUS | MINUS) Num)*
- */
-
 use crate::{
+    ast::Ast,
+    term::Term,
     token::{Token, TokenType},
     token_vec::TokenVec,
 };
@@ -15,38 +13,47 @@ enum AddOrSub {
 
 #[derive(Debug)]
 pub struct Expr<'a> {
-    value: Vec<&'a Token>,
+    value: Vec<Term<'a>>,
     ops: Vec<AddOrSub>,
+    token_len: usize,
 }
 
-impl<'a> Expr<'a> {
-    pub fn parse(lexed: &'a [Token]) -> Result<Self, &str> {
+impl<'a> Ast<'a> for Expr<'a> {
+    fn parse(lexed: &'a [Token]) -> Result<Self, &str> {
         let mut cursor = 0;
         let mut value = vec![];
         let mut ops = vec![];
 
         {
-            let tk = lexed.expect_kind(TokenType::Num(0))?;
-            value.push(tk);
-            cursor += 1;
+            let term = Term::parse(lexed)?;
+            cursor += term.token_len();
+            value.push(term);
         }
 
         loop {
             if (&lexed[cursor..]).consume_kind(TokenType::Plus).is_some() {
                 ops.push(AddOrSub::Add);
-                let tk = (&lexed[cursor + 1..]).expect_kind(TokenType::Num(0))?;
-                value.push(tk);
-                cursor += 2;
+                let term = Term::parse(&lexed[cursor + 1..])?;
+                cursor += 1 + term.token_len();
+                value.push(term);
             } else if (&lexed[cursor..]).consume_kind(TokenType::Minus).is_some() {
                 ops.push(AddOrSub::Sub);
-                let tk = (&lexed[cursor + 1..]).expect_kind(TokenType::Num(0))?;
-                value.push(tk);
-                cursor += 2;
+                let term = Term::parse(&lexed[cursor + 1..])?;
+                cursor += 1 + term.token_len();
+                value.push(term);
             } else {
                 break;
             }
         }
 
-        Ok(Self { value, ops })
+        Ok(Self {
+            value,
+            ops,
+            token_len: cursor,
+        })
+    }
+
+    fn token_len(&self) -> usize {
+        self.token_len
     }
 }

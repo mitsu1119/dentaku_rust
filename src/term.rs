@@ -1,7 +1,5 @@
-/*
- * <term> = Num ((MUL | DIV) Num)*
- */
 use crate::{
+    ast::Ast,
     token::{Token, TokenType},
     token_vec::TokenVec,
 };
@@ -16,10 +14,11 @@ enum MulOrDiv {
 pub struct Term<'a> {
     value: Vec<&'a Token>,
     ops: Vec<MulOrDiv>,
+    token_len: usize,
 }
 
-impl<'a> Term<'a> {
-    pub fn parse(lexed: &'a [Token]) -> Result<Self, &str> {
+impl<'a> Ast<'a> for Term<'a> {
+    fn parse(lexed: &'a [Token]) -> Result<Self, &str> {
         let mut cursor = 0;
         let mut value = vec![];
         let mut ops = vec![];
@@ -49,6 +48,14 @@ impl<'a> Term<'a> {
             }
         }
 
-        Ok(Self { value, ops })
+        Ok(Self {
+            value,
+            ops,
+            token_len: cursor,
+        })
+    }
+
+    fn token_len(&self) -> usize {
+        self.token_len
     }
 }
