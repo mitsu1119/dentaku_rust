@@ -8,7 +8,7 @@ pub enum TokenType {
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Token {
-    kind: TokenType,
+    pub kind: TokenType,
 }
 
 impl Token {

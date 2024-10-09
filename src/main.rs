@@ -5,8 +5,10 @@ use std::{
 
 use calc::Calc;
 
+mod ast;
 mod calc;
 mod lexer;
+mod parser;
 mod token;
 
 fn main() -> Result<(), Box<dyn Error>> {
