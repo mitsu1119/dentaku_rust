@@ -8,6 +8,7 @@ use calc::Calc;
 mod ast;
 mod calc;
 mod expr;
+mod factor;
 mod lexer;
 mod parser;
 mod term;
