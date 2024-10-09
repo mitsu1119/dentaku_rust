@@ -1,7 +1,3 @@
-/*
- * <expr> = Num ((PLUS | MINUS) Num)*
- */
-
 use crate::{expr::Expr, token::Token};
 
 pub struct Parser {}

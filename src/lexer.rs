@@ -39,6 +39,8 @@ impl Lexer {
             match ch.chars().next().unwrap() {
                 '+' => Some(Token::new(TokenType::Plus)),
                 '-' => Some(Token::new(TokenType::Minus)),
+                '*' => Some(Token::new(TokenType::Asterisk)),
+                '/' => Some(Token::new(TokenType::Slash)),
                 _ => None,
             }
         }

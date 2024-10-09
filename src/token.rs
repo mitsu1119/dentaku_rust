@@ -3,6 +3,8 @@ pub enum TokenType {
     Num(i64),
     Plus,
     Minus,
+    Asterisk,
+    Slash,
     Unidentified(String),
 }
 

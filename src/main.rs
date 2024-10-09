@@ -9,6 +9,7 @@ mod calc;
 mod expr;
 mod lexer;
 mod parser;
+mod term;
 mod token;
 mod token_vec;
 
