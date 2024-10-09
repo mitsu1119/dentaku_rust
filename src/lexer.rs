@@ -32,6 +32,18 @@ impl Lexer {
         }
     }
 
+    fn is_single_reserved(ch: &str) -> Option<Token> {
+        if ch.len() != 1 {
+            None
+        } else {
+            match ch.chars().next().unwrap() {
+                '+' => Some(Token::new(TokenType::Plus)),
+                '-' => Some(Token::new(TokenType::Minus)),
+                _ => None,
+            }
+        }
+    }
+
     pub fn lex(target: &str) -> Vec<Token> {
         if target.len() == 0 {
             return vec![];
@@ -44,9 +56,13 @@ impl Lexer {
             let ch = &target[cursor..cursor + 1];
             if Lexer::is_space(ch) {
                 cursor += 1;
+            } else if let Some(tk) = Self::is_single_reserved(ch) {
+                res.push(tk);
+                cursor += 1;
             } else if Lexer::is_numeric(ch) {
                 let num = Self::read_decimal(&target[cursor..]);
-                let tk = Token::new(TokenType::Unidentified(num.to_string()));
+                let num_int = num.parse::<i64>().unwrap();
+                let tk = Token::new(TokenType::Num(num_int));
                 res.push(tk);
                 cursor += num.len();
             } else {
