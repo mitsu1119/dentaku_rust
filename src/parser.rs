@@ -1,6 +1,6 @@
 /*
  * <expr> = <term> ((Plus | Minus) <term>)*
- * <term> = Num ((Asterisk | Slash) Num)*
+ * <term> = <factor> ((Asterisk | Slash) <factor>)*
  * <factor> = Num
  */
 

@@ -1,5 +1,6 @@
 use crate::{
     ast::Ast,
+    factor::Factor,
     token::{Token, TokenType},
     token_vec::TokenVec,
 };
@@ -12,7 +13,7 @@ enum MulOrDiv {
 
 #[derive(Debug)]
 pub struct Term<'a> {
-    value: Vec<&'a Token>,
+    value: Vec<Factor<'a>>,
     ops: Vec<MulOrDiv>,
     token_len: usize,
 }
@@ -24,9 +25,9 @@ impl<'a> Ast<'a> for Term<'a> {
         let mut ops = vec![];
 
         {
-            let tk = lexed.expect_kind(TokenType::Num(0))?;
-            value.push(tk);
-            cursor += 1;
+            let factor = Factor::parse(&lexed[cursor..])?;
+            cursor += factor.token_len();
+            value.push(factor);
         }
 
         loop {
@@ -35,14 +36,14 @@ impl<'a> Ast<'a> for Term<'a> {
                 .is_some()
             {
                 ops.push(MulOrDiv::Mul);
-                let tk = (&lexed[cursor + 1..]).expect_kind(TokenType::Num(0))?;
-                value.push(tk);
-                cursor += 2;
+                let factor = Factor::parse(&lexed[cursor + 1..])?;
+                cursor += 1 + factor.token_len();
+                value.push(factor);
             } else if (&lexed[cursor..]).consume_kind(TokenType::Slash).is_some() {
                 ops.push(MulOrDiv::Div);
-                let tk = (&lexed[cursor + 1..]).expect_kind(TokenType::Num(0))?;
-                value.push(tk);
-                cursor += 2;
+                let factor = Factor::parse(&lexed[cursor + 1..])?;
+                cursor += 1 + factor.token_len();
+                value.push(factor);
             } else {
                 break;
             }
